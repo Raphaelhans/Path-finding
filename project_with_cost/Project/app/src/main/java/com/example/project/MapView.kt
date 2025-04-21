@@ -133,7 +133,11 @@ class MapView @JvmOverloads constructor(
         Node("104", 826f, 1567f, "104: Jl. Ngagel Jaya Tengah & Jl. Ngagel Wasana I"),
         Node("105", 1040f, 1362f, "105: Jl. Ngagel Wasana VII & Jl. Ngagel Wasana III"),
         Node("106", 1029f, 1422f, "106: Jl. Ngagel Wasana IX & Jl. Ngagel Wasana III"),
-        Node("107", 1014f, 1565f, "107: Jl. Ngagel Jaya Selatan IX & Jl. Ngagel Wasana III")
+        Node("107", 1014f, 1565f, "107: Jl. Ngagel Jaya Selatan IX & Jl. Ngagel Wasana III"),
+        Node("108", 100f, 1418f, "108: Jl. Ngagel Jaya Selatan IX & Jl. Ngagel Wasana III"),
+        Node("109", 753f, 990f, "108: Jl. Ngagel Jaya Selatan IX & Jl. Ngagel Wasana III"),
+        Node("110", 755f, 1148f, "108: Jl. Ngagel Jaya Selatan IX & Jl. Ngagel Wasana III"),
+
     )
 
     val buildings = listOf(
@@ -149,7 +153,14 @@ class MapView @JvmOverloads constructor(
         Building("B10", 278f, 663f, "Gedung 10 - Jl. Ngagel Tama Utara II"),
         Building("B11", 278f, 733f, "Gedung 11 - Jl. Ngagel Tama Utara III"),
         Building("B12", 278f, 790f, "Gedung 12 - Jl. Ngagel Tama Utara IV"),
-        Building("B13", 278f, 844f, "Gedung 13 - Jl. Ngagel Jaya Utara")
+        Building("B13", 278f, 844f, "Gedung 13 - Jl. Ngagel Jaya Utara"),
+        Building("B14", 784f, 873f, "Gedung 14 - Jl. Ngagel Tama Utara I"),
+        Building("B15", 733f, 1036f, "Gedung 15 - Jl. Ngagel Tama Utara II"),
+        Building("B16", 173f, 1217f, "Gedung 16 - Jl. Ngagel Tama Utara III"),
+        Building("B17", 137f, 1360f, "Gedung 17 - Jl. Ngagel Tama Utara IV"),
+        Building("B18", 224f, 1619f, "Gedung 18 - Jl. Ngagel Jaya Selatan"),
+        Building("B19", 587f, 1619f, "Gedung 19 - Jl. Ngagel Jaya Selatan"),
+        Building("B20", 916f, 1534f, "Gedung 20 - Jl. Ngagel Jaya Selatan"),
     )
 
     private var startBuilding: Building? = null
@@ -162,6 +173,10 @@ class MapView @JvmOverloads constructor(
 
     private val nodePaint = Paint().apply {
         color = Color.BLACK
+        style = Paint.Style.FILL
+    }
+    private val nodePaint2 = Paint().apply {
+        color = Color.GREEN
         style = Paint.Style.FILL
     }
 
@@ -214,6 +229,9 @@ class MapView @JvmOverloads constructor(
         }
 
         for (node in nodes) {
+            if (node.id == "107"){
+                canvas.drawCircle(node.x * scaleFactorX, node.y * scaleFactorY, 10f, nodePaint2)
+            }
             canvas.drawCircle(node.x * scaleFactorX, node.y * scaleFactorY, 10f, nodePaint)
         }
 

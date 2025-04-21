@@ -123,6 +123,9 @@ class MainActivity : AppCompatActivity() {
             "105" to listOf("87" to 30f, "94" to 30f, "106" to 35f),
             "106" to listOf("105" to 35f, "107" to 28f),
             "107" to listOf("104" to 30f, "106" to 28f),
+            "108" to listOf("82" to 30f, "83" to 35f),
+            "109" to listOf("30" to 35f, "85" to 40f),
+            "110" to listOf("109" to 40f, "31" to 35f),
             "B1" to listOf("4" to 15f, "5" to 20f),
             "B2" to listOf("7" to 22f, "6" to 18f),
             "B3" to listOf("4" to 15f, "5" to 20f),
@@ -135,7 +138,14 @@ class MainActivity : AppCompatActivity() {
             "B10" to listOf("41" to 25f, "37" to 30f),
             "B11" to listOf("38" to 28f, "42" to 30f),
             "B12" to listOf("39" to 25f, "43" to 30f),
-            "B13" to listOf("40" to 28f, "44" to 30f)
+            "B13" to listOf("40" to 28f, "44" to 30f),
+            "B14" to listOf("30" to 25f),
+            "B15" to listOf("109" to 30f, "110" to 40f),
+            "B16" to listOf("82" to 35f, "49" to 28f),
+            "B17" to listOf("51" to 25f, "82" to 30f, "108" to 35f),
+            "B18" to listOf("59" to 35f, "60" to 28f, "69" to 39f),
+            "B19" to listOf("61" to 40f, "70" to 25f),
+            "B20" to listOf("104" to 30f, "107" to 28f),
         )
 
         val newGraph = mutableMapOf<String, MutableList<Pair<String, Float>>>()
@@ -189,17 +199,16 @@ class MainActivity : AppCompatActivity() {
 
     private data class Node(
         val id: String,
-        val g: Float, // Actual cost from start to this node
-        val h: Float, // Heuristic estimate to the goal
+        val g: Float,
+        val h: Float,
         val parent: Node?,
         val previousNodeId: String?
     ) : Comparable<Node> {
-        val f: Float = g + h // Total estimated cost
+        val f: Float = g + h
         override fun compareTo(other: Node): Int = f.compareTo(other.f)
     }
 
     private fun findPathWithAStar(startId: String, endId: String): Triple<List<String>, Float, String?> {
-        // Check if start and end nodes exist in the graph
         if (startId !in graph) {
             return Triple(emptyList(), 0f, "Start node $startId not found in the graph")
         }
@@ -207,7 +216,6 @@ class MainActivity : AppCompatActivity() {
             return Triple(emptyList(), 0f, "End node $endId not found in the graph")
         }
 
-        // Handle the case where start and end are the same
         if (startId == endId) {
             return Triple(listOf(startId), 0f, null)
         }
@@ -216,7 +224,6 @@ class MainActivity : AppCompatActivity() {
         val closedList = mutableSetOf<String>()
         val parentMap = mutableMapOf<String, Node>()
 
-        // Initialize the start node
         val startNode = Node(startId, 0f, binding.mapView.estimateDistance(startId, endId).toFloat(), null, null)
         openList.add(startNode)
         parentMap[startId] = startNode
@@ -226,7 +233,6 @@ class MainActivity : AppCompatActivity() {
             val currentId = current.id
 
             if (currentId == endId) {
-                // Reconstruct the path
                 val path = mutableListOf<String>()
                 var node: Node? = current
                 while (node != null) {
@@ -246,9 +252,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (neighborId in closedList) continue
 
-                // Calculate the new g score using the edge cost
                 var newG = current.g + edgeCost
-                // Add a U-turn penalty if the neighbor is the previous node
                 if (current.previousNodeId != null && neighborId == current.previousNodeId) {
                     newG += 10f
                 }
